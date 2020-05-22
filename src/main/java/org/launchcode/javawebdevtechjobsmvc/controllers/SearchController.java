@@ -28,13 +28,10 @@ public class SearchController {
     public String displaySearchResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm){
         ArrayList<Job> jobs;
 
-        if (searchType.toLowerCase().equals("all") && searchTerm.isEmpty()){
+        if (searchType.toLowerCase().equals("all") && (searchTerm.isEmpty() || searchTerm.toLowerCase().trim().equals("all"))){
             jobs = JobData.findAll();
             model.addAttribute("title", "All Jobs");
-        } else if (searchType.toLowerCase().equals("all") && searchTerm.toLowerCase().trim().equals("all")){
-            jobs = JobData.findAll();
-            model.addAttribute("title", "All Jobs");
-        } else {
+        }  else {
             jobs = JobData.findByColumnAndValue(searchType, searchTerm.trim());
             model.addAttribute("title", "Jobs with " + columnChoices.get(searchType) + ": " + searchTerm);
         }
